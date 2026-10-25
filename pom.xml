@@ -8,5 +8,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>chapter-01</module>
+        <module>chapter-01/benchmarks</module>
     </modules>
 </project>

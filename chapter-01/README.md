@@ -28,6 +28,8 @@ mvn test
 
 `ScopeDemo`의 참/거짓 출력은 순서대로 `false`, `true`, `false`, `false`다.
 
+요청마다 객체 다섯 개를 만드는 경우와 스프링 싱글톤 빈 다섯 개를 재사용하는 경우의 할당량을 비교하려면 [1.6 성능 실험](benchmarks/README.md)을 별도로 실행한다. 이 실험은 `mvn test`의 정답 검증과 분리되어 있다.
+
 | 확인할 것 | 코드와 테스트 |
 | --- | --- |
 | 일반 팩토리와 스프링 싱글톤, `==`와 `equals()` | `SpringDaoConfig`, `SingletonRegistryTest` |
