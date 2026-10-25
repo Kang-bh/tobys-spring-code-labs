@@ -4,14 +4,17 @@
 
 ## 실행
 
-저장소 루트에서 Java 17 이상과 Maven으로 실행한다. `mvn test`에서는 벤치마크를 실행하지 않는다.
+저장소 루트에서 Java 17 이상, Maven, Python 3으로 실행한다. `mvn test`에서는 벤치마크를 실행하지 않는다. 아래 명령은 실제 서버에 HTTP 요청을 보내지 않고 로컬 JVM에서 두 작은 작업을 비교한다.
 
 ```bash
 mvn -pl chapter-01/benchmarks -am -DskipTests package
-java -jar chapter-01/benchmarks/target/benchmarks.jar ObjectCreationBenchmark -f 2 -wi 5 -i 5 -w 2s -r 2s -t 1 -prof gc
+java -jar chapter-01/benchmarks/target/benchmarks.jar ObjectCreationBenchmark -f 2 -wi 5 -i 5 -w 2s -r 2s -t 1 -prof gc -rf json -rff chapter-01/benchmarks/target/benchmark-results.json
+python3 chapter-01/benchmarks/report.py chapter-01/benchmarks/target/benchmark-results.json
 ```
 
-짧게 동작을 확인할 때는 `-f 1 -wi 2 -i 3 -w 1s -r 1s`로 줄일 수 있다. 공유 싱글톤을 여러 스레드에서 실행해 보려면 `-t 4`처럼 스레드 수를 바꾼다. 결과는 장비, JDK, GC, 워밍업 조건에 따라 달라진다.
+**콘솔 출력:** 두 번째 명령(JMH)은 각 경로의 `gc.alloc.rate.norm`을 포함한 측정 표를 출력하고 JSON 결과 파일도 저장한다. 세 번째 명령은 그 파일을 읽어 **객체 할당량 감소율(%)**을 콘솔에 출력한다. 서버 전체 처리 효율의 백분율이 아니다.
+
+짧게 동작을 확인할 때는 `-f 1 -wi 2 -i 3 -w 1s -r 1s`로 줄일 수 있다. 공유 싱글톤을 여러 스레드에서 실행해 보려면 `-t 4`처럼 스레드 수를 바꾼다. 결과는 장비, JDK, GC, 워밍업 조건에 따라 달라진다. 환산 요청률을 바꾸려면 보고 명령에 `--rps 1000`처럼 지정한다.
 
 ## 읽을 지표
 
@@ -32,7 +35,16 @@ java -jar chapter-01/benchmarks/target/benchmarks.jar ObjectCreationBenchmark -f
 | 매번 5개 생성 | 80 B/op | 약 0.006 µs/op | 약 40,000 B/s (39 KiB/s) |
 | 싱글톤 5개 재사용 | 거의 0 B/op | 약 0.002 µs/op | 거의 0 B/s |
 
-이 실험에서는 새 객체 할당량 차이를 확인할 수 있지만, 39 KiB/s만으로 서비스에 GC 병목이 생긴다고 결론 내릴 수는 없다. 작업 시간은 극히 작은 계산의 결과이며, 스프링 컨테이너 조회·HTTP 요청·DB 작업의 시간을 나타내지 않는다. 위 환산값은 실제로 초당 500요청을 가한 측정값이 아니다.
+이 결과의 **객체 할당량 감소율은 약 100%**다. 정확한 숫자는 실행 환경의 두 `B/op` 값으로 보고 명령이 계산한다. 콘솔에는 다음 형태로 표시된다.
+
+```text
+JMH 객체 할당 비교 (1 op = 객체 5개를 사용하는 작업 1회)
+요청마다 5개 생성: 80.000171 B/op; 500 작업/초 환산 39.0626 KiB/s
+싱글톤 5개 재사용: 0.000043 B/op; 500 작업/초 환산 0.0000 KiB/s
+객체 할당량 감소율: 99.9999%
+```
+
+이것은 위 조건의 로컬 실행에서 나온 실제 콘솔 출력이다. `99.9999%`는 **이 작업의 객체 할당량 감소율**이며 서버 전체 성능 향상률이 아니다. 39 KiB/s만으로 서비스에 GC 병목이 생긴다고 결론 내릴 수는 없다. 작업 시간은 극히 작은 계산의 결과이며, 스프링 컨테이너 조회·HTTP 요청·DB 작업의 시간을 나타내지 않는다. 위 환산값은 실제로 초당 500요청을 가한 측정값이 아니다.
 
 싱글톤으로 재사용하는 객체는 요청별 변경 상태를 공유하지 않아야 한다. 이 실험의 다섯 객체는 불변 값만 가진다.
 
