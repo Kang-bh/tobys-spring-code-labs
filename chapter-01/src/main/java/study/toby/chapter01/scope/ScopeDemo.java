@@ -1,8 +1,8 @@
 package study.toby.chapter01.scope;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import study.toby.chapter01.DaoFactory;
-import study.toby.chapter01.PrimaryConnectionMaker;
+import study.toby.chapter01.dao.DaoFactory;
+import study.toby.chapter01.dao.PrimaryConnectionMaker;
 
 public final class ScopeDemo {
     private ScopeDemo() { }

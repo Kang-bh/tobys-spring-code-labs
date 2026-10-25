@@ -1,4 +1,4 @@
-package study.toby.chapter01;
+package study.toby.chapter01.dao;
 
 import java.util.Objects;
 

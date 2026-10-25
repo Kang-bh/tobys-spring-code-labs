@@ -10,7 +10,7 @@ Java 17 이상과 Maven 3.9 이상이 필요하다. 저장소 루트에서 `mvn 
 
 ```bash
 mvn test
-mvn -pl chapter-01 -q compile exec:java -Dexec.mainClass=study.toby.chapter01.Demo
+mvn -pl chapter-01 -q compile exec:java -Dexec.mainClass=study.toby.chapter01.dao.Demo
 mvn -pl chapter-01 -q compile exec:java -Dexec.mainClass=study.toby.chapter01.scope.ScopeDemo
 ```
 

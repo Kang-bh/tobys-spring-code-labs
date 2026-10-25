@@ -2,9 +2,9 @@ package study.toby.chapter01.scope;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import study.toby.chapter01.DaoFactory;
-import study.toby.chapter01.PrimaryConnectionMaker;
-import study.toby.chapter01.UserDao;
+import study.toby.chapter01.dao.DaoFactory;
+import study.toby.chapter01.dao.PrimaryConnectionMaker;
+import study.toby.chapter01.dao.UserDao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

@@ -4,7 +4,7 @@
 
 | 절 | 핵심 | 설명 및 코드 |
 | --- | --- | --- |
-| 1.4 DaoFactory | 생성자 주입과 객체 조립 | [학습 정리](https://app.notion.com/p/404b48e0c8ae81e98953cc057f03fe5e) · [dao 코드](src/main/java/study/toby/chapter01/) · [테스트](src/test/java/study/toby/chapter01/DaoFactoryTest.java) |
+| 1.4 DaoFactory | 생성자 주입과 객체 조립 | [학습 정리](https://app.notion.com/p/404b48e0c8ae81e98953cc057f03fe5e) · [dao 코드](src/main/java/study/toby/chapter01/dao/) · [테스트](src/test/java/study/toby/chapter01/dao/DaoFactoryTest.java) |
 | 1.6 싱글톤 레지스트리와 오브젝트 스코프 | 컨테이너의 객체 재사용, 공유 상태, 스코프 | [학습 정리](https://app.notion.com/p/404b48e0c8ae81c6a2b1e61bd085bbb1) · [scope 코드](src/main/java/study/toby/chapter01/scope/) · [테스트](src/test/java/study/toby/chapter01/scope/) |
 
 ## 1.4 DaoFactory
@@ -12,7 +12,7 @@
 `UserDao`는 `ConnectionMaker` 인터페이스를 생성자로 받는다. `DaoFactory`가 연결 구현체를 선택해 전달하므로, 연결 제공자를 바꿀 때 DAO 코드를 수정하지 않는다. 두 구현체는 서로 다른 H2 메모리 DB를 제공한다.
 
 ```bash
-mvn -q compile exec:java -Dexec.mainClass=study.toby.chapter01.Demo
+mvn -q compile exec:java -Dexec.mainClass=study.toby.chapter01.dao.Demo
 ```
 
 `DaoFactoryTest`는 같은 `UserDao` 코드가 두 연결 구현체에서 작동하고 데이터가 분리됨을 확인한다. 실제 DB 제품 교체를 검증하는 실습은 아니다.

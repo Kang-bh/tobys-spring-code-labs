@@ -2,9 +2,9 @@ package study.toby.chapter01.scope;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import study.toby.chapter01.ConnectionMaker;
-import study.toby.chapter01.PrimaryConnectionMaker;
-import study.toby.chapter01.UserDao;
+import study.toby.chapter01.dao.ConnectionMaker;
+import study.toby.chapter01.dao.PrimaryConnectionMaker;
+import study.toby.chapter01.dao.UserDao;
 
 @Configuration
 public class SpringDaoConfig {
